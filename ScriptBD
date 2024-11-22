@@ -1,0 +1,180 @@
+set search_path to weshare;
+
+create schema if not exists weshare;
+
+CREATE TABLE usuario (
+
+                         id SERIAL PRIMARY KEY,
+
+                         nombre VARCHAR(255) NOT NULL,
+
+                         correo VARCHAR(255) UNIQUE NOT NULL,
+
+                         contraseña VARCHAR(255) NOT NULL
+
+);
+
+
+
+
+
+CREATE TABLE grupo (
+
+                       id SERIAL PRIMARY KEY,
+
+                       nombre VARCHAR(255) NOT NULL,
+
+                       num_integrantes INT NOT NULL,
+
+                       fecha_grupo DATE NOT NULL
+
+);
+
+
+
+
+
+CREATE TABLE pago (
+
+                      id SERIAL PRIMARY KEY,
+
+                      importe DECIMAL(10, 2) NOT NULL,
+
+                      descripcion VARCHAR(255),
+
+                      id_usuario INT NOT NULL,
+
+                      id_grupo INT NOT NULL,
+
+                      fecha_gasto DATE NOT NULL,
+
+                      FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
+
+                      FOREIGN KEY (id_grupo) REFERENCES grupo(id) ON DELETE CASCADE
+
+);
+
+
+
+CREATE TABLE grupo_usuario (
+
+                               id_usuario INT NOT NULL,
+
+                               id_grupo INT NOT NULL,
+
+                               PRIMARY KEY (id_usuario, id_grupo),
+
+                               FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE,
+
+                               FOREIGN KEY (id_grupo) REFERENCES grupo(id) ON DELETE CASCADE
+
+);
+
+CREATE TABLE amigo (
+                       usuario_id INT NOT NULL,
+                       amigo_id INT NOT NULL,
+                       PRIMARY KEY (usuario_id, amigo_id),
+                       FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+                       FOREIGN KEY (amigo_id) REFERENCES usuario(id)
+);
+
+INSERT INTO grupo (nombre, num_integrantes, fecha_grupo) VALUES
+                                                             ('Grupo Alfa', 10, '2023-01-01'),
+                                                             ('Grupo Beta', 8, '2023-02-10'),
+                                                             ('Grupo Gamma', 15, '2023-03-15'),
+                                                             ('Grupo Delta', 5, '2023-04-20'),
+                                                             ('Grupo Epsilon', 12, '2023-05-25'),
+                                                             ('Grupo Zeta', 6, '2023-06-30'),
+                                                             ('Grupo Eta', 9, '2023-07-10'),
+                                                             ('Grupo Theta', 7, '2023-08-15'),
+                                                             ('Grupo Iota', 14, '2023-09-20'),
+                                                             ('Grupo Kappa', 11, '2023-10-25');
+
+INSERT INTO usuario (nombre, correo, contraseña) VALUES
+                                                     ('Carlos Pérez', 'carlos.perez@example.com', 'password1'),
+                                                     ('María López', 'maria.lopez@example.com', 'password2'),
+                                                     ('Ana García', 'ana.garcia@example.com', 'password3'),
+                                                     ('Pedro Martínez', 'pedro.martinez@example.com', 'password4'),
+                                                     ('Laura Sánchez', 'laura.sanchez@example.com', 'password5'),
+                                                     ('Luis Fernández', 'luis.fernandez@example.com', 'password6'),
+                                                     ('Elena Gómez', 'elena.gomez@example.com', 'password7'),
+                                                     ('Jorge Ramos', 'jorge.ramos@example.com', 'password8'),
+                                                     ('Paula Torres', 'paula.torres@example.com', 'password9'),
+                                                     ('Sofía Núñez', 'sofia.nunez@example.com', 'password10'),
+                                                     ('Laura Rodríguez', 'laura.rodriguez@example.com', 'seguraLaura123'),
+                                                     ('Jorge Fernández', 'jorge.fernandez@example.com', 'claveJorge456'),
+                                                     ('Rosa Díaz', 'rosa.diaz@example.com', 'rosaDiaz789'),
+                                                     ('Miguel Morales', 'miguel.morales@example.com', 'accesoMiguel101'),
+                                                     ('Patricia Ortiz', 'patricia.ortiz@example.com', 'passPatricia2023'),
+                                                     ('Luis Hernández', 'luis.hernandez@example.com', 'hernandezLuis4567'),
+                                                     ('María Jiménez', 'maria.jimenez@example.com', 'mJimenezP4ss'),
+                                                     ('Pedro Castro', 'pedro.castro@example.com', 'castroPedro234'),
+                                                     ('Lucía Alonso', 'lucia.alonso@example.com', 'lAlonsoMiClave'),
+                                                     ('Ricardo Blanco', 'ricardo.blanco@example.com', 'ricardoClave2023'),
+                                                     ('Raquel Gómez', 'raquel.gomez@example.com', 'raquelGomez543'),
+                                                     ('Daniel Romero', 'daniel.romero@example.com', 'danielRomero098'),
+                                                     ('Gloria Méndez', 'gloria.mendez@example.com', 'gloria2023pass'),
+                                                     ('Tomás Suárez', 'tomas.suarez@example.com', 'tommySecure101'),
+                                                     ('Alicia Vargas', 'alicia.vargas@example.com', 'aliciaVA123'),
+                                                     ('Carlos Mendoza', 'carlos.mendoza@example.com', 'carlosMpass789'),
+                                                     ('Sara Vega', 'sara.vega@example.com', 'saraVegaP2024'),
+                                                     ('Ernesto Gil', 'ernesto.gil@example.com', 'gilE123456'),
+                                                     ('Verónica Cruz', 'veronica.cruz@example.com', 'cruzV2025'),
+                                                     ('Gabriel Silva', 'gabriel.silva@example.com', 'silvaGab2026');
+
+INSERT INTO pago (importe, descripcion, id_usuario, id_grupo, fecha_gasto) VALUES
+                                                                               (100.50, 'Compra materiales', 1, 1, '2024-01-10'),
+                                                                               (75.20, 'Evento social', 2, 1, '2024-01-15'),
+                                                                               (50.00, 'Comida', 3, 1, '2024-02-05'),
+                                                                               (120.00, 'Alquiler espacio', 4, 2, '2024-02-20'),
+                                                                               (80.30, 'Transporte', 5, 2, '2024-03-10'),
+                                                                               (45.00, 'Publicidad', 6, 3, '2024-03-25'),
+                                                                               (65.50, 'Materiales extra', 7, 3, '2024-04-10'),
+                                                                               (90.00, 'Evento deportivo', 8, 4, '2024-04-20'),
+                                                                               (100.00, 'Reunión', 9, 4, '2024-05-05'),
+                                                                               (150.50, 'Premios', 10, 5, '2024-05-25'),
+                                                                               (110.20, 'Renovación equipos', 11, 5, '2024-06-15'),
+                                                                               (75.00, 'Marketing', 12, 6, '2024-06-30'),
+                                                                               (130.00, 'Capacitación', 13, 6, '2024-07-10'),
+                                                                               (85.30, 'Alquiler espacio', 14, 7, '2024-07-25'),
+                                                                               (55.00, 'Equipos adicionales', 15, 8, '2024-08-10'),
+                                                                               (95.50, 'Mantenimiento', 16, 8, '2024-08-25'),
+                                                                               (70.00, 'Materiales de oficina', 17, 9, '2024-09-10'),
+                                                                               (115.00, 'Entrenamiento', 18, 9, '2024-09-25'),
+                                                                               (105.20, 'Publicidad', 19, 10, '2024-10-10'),
+                                                                               (85.00, 'Servicios varios', 20, 10, '2024-10-25');
+
+INSERT INTO grupo_usuario (id_usuario, id_grupo) VALUES
+                                                     (1, 1), (2, 1), (3, 1), (4, 1), (5, 1),
+                                                     (6, 1), (7, 1), (8, 1), (9, 1), (10, 1),
+                                                     (11, 1), (12, 1), (13, 1), (14, 1), (15, 1),
+                                                     (16, 1), (17, 1), (18, 1), (19, 1), (20, 1),
+                                                     (21, 1), (22, 1), (23, 1), (24, 1), (25, 1),
+                                                     (26, 1), (27, 1), (28, 1), (29, 1), (30, 1);
+
+INSERT INTO amigo (usuario_id, amigo_id) VALUES
+                                             (1, 2), (1, 3), (1, 4), (1, 5), (1, 6),
+                                             (2, 1), (2, 3), (2, 4), (2, 7), (2, 8),
+                                             (3, 1), (3, 2), (3, 5), (3, 6), (3, 9),
+                                             (4, 1), (4, 2), (4, 7), (4, 8), (4, 10),
+                                             (5, 1), (5, 3), (5, 9), (5, 10), (5, 11);
+
+
+SCRIPT PARA BALANCE MEDIANTE CONSULTAS
+
+
+select sum(importe) as total_grupo from pago where id_grupo = 1;
+
+select count(*) as num_usuario from usuario_grupo ug where id_grupo = 1;
+
+select (select sum(importe) as total_grupo from pago where id_grupo = 1)/
+    (select count(*) as num_usuario from usuario_grupo ug where id_grupo = 1) as balance_por_persona;
+
+select coalesce(sum(importe), 0) from pago p where id_usuario = 3 and id grupo = 1;
+
+select ((select sum(importe) as total_grupo from pago where id_grupo = 1)/
+    (select count(*) as num_usuario from usuario_grupo ug where id_grupo = 1)) -
+     (select coalesce(sum(importe), 0) from pago p where id_usuario = 3 and id grupo = 1)
+     as balance_por_persona;
+
+PASAR A JPQL
